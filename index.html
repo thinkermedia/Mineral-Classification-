@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mineral Markets Survey</title>
+<style>
+:root{--ink:#14213d;--muted:#5b6785;--blue:#1f5fbf;--blue-d:#174a96;--blue-l:#e8f0fc;--line:#d6deee;--bg:#f5f7fb;--card:#fff;--gold:#b8892b;--err:#b3261e}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:16px;line-height:1.45}
+header{background:#fff;border-bottom:1px solid var(--line);padding:12px 20px;display:flex;align-items:center;justify-content:space-between}
+.brand{font-weight:700;letter-spacing:.04em;color:var(--gold);font-size:14px;text-transform:uppercase}
+.prog{height:4px;background:var(--line)}
+.prog>div{height:4px;background:var(--blue);width:0;transition:width .25s}
+main{max-width:860px;margin:0 auto;padding:24px 16px 80px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:24px 22px}
+.eyebrow{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--blue);font-weight:600;margin-bottom:6px}
+.qtitle{font-size:14px;color:var(--muted);margin:0 0 6px}
+h1{font-size:22px;line-height:1.3;margin:0 0 6px}
+.instr{color:var(--muted);font-size:14px;margin:0 0 18px}
+.opts{display:flex;flex-direction:column;gap:8px}
+.opt{display:flex;align-items:flex-start;gap:12px;border:1px solid var(--line);border-radius:10px;padding:12px 14px;cursor:pointer;background:#fff;user-select:none;text-align:left;width:100%;font:inherit;color:inherit}
+.opt:hover{border-color:var(--blue)}
+.opt.sel{border-color:var(--blue);background:var(--blue-l)}
+.opt .mk{flex:0 0 20px;height:20px;border:2px solid #9fb0d3;border-radius:50%;margin-top:1px;position:relative}
+.opt.multi .mk{border-radius:5px}
+.opt.sel .mk{border-color:var(--blue);background:var(--blue)}
+.opt.sel .mk:after{content:"";position:absolute;left:5px;top:1px;width:5px;height:10px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg)}
+.opt.dis{opacity:.45;cursor:not-allowed}
+.fam{font-size:13px;font-weight:600;color:var(--muted);margin:14px 0 6px;text-transform:none}
+.fam:first-child{margin-top:0}
+.grow{border:1px solid var(--line);border-radius:10px;padding:14px;margin-bottom:12px;background:#fff}
+.grow.bad{border-color:var(--err);background:#fdf2f1}
+.glabel{font-weight:600;margin-bottom:10px}
+.pills{display:flex;flex-wrap:wrap;gap:8px}
+.pill{border:1px solid var(--line);border-radius:999px;padding:8px 14px;font:inherit;font-size:14px;background:#fff;cursor:pointer;color:inherit;text-align:left}
+.pill:hover{border-color:var(--blue)}
+.pill.sel{border-color:var(--blue);background:var(--blue);color:#fff}
+.pill.nv{border-style:dashed}
+.pill.nv.sel{border-style:solid}
+.bar{display:flex;justify-content:space-between;align-items:center;margin-top:22px;gap:12px}
+.btn{background:var(--blue);color:#fff;border:0;border-radius:10px;padding:12px 26px;font:inherit;font-weight:600;cursor:pointer}
+.btn:hover{background:var(--blue-d)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.err{color:var(--err);font-size:14px;min-height:20px}
+.hint{color:var(--muted);font-size:14px;margin-top:10px}
+.cnt{font-size:14px;color:var(--blue);font-weight:600}
+.center{text-align:center;padding:40px 10px}
+.center h1{margin-bottom:10px}
+@media(max-width:560px){.card{padding:18px 14px}h1{font-size:19px}}
+</style>
+</head>
+<body>
+<header><div class="brand">Thinker Media Group</div><div id="pg" style="font-size:13px;color:var(--muted)"></div></header>
+<div class="prog"><div id="pbar"></div></div>
+<main><div id="app"></div></main>
+<script>
+const SCRIPT_URL='https://script.google.com/macros/s/AKfycbwIHfvwX7LdEq40BH1pVZKkFC_1ed0FLQTDeD98BlSYKh8m358Gv_M9jxypdrfnxMP9JA/exec';
+const SPEC={"meta":{"tier1":["Iron ore","Metallurgical coal","Thermal coal","Copper","Aluminium","Nickel","Zinc","Lead","Tin","Lithium","Cobalt","Natural graphite","Uranium","Zirconium","NdPr (neodymium-praseodymium)","Dy/Tb (dysprosium-terbium)","Tungsten","Antimony","Titanium feedstock","Molybdenum","Tantalum","Gold","Silver","Platinum and palladium","Phosphate rock","Potash"],"tier2":["Gallium","Germanium","Indium","Tellurium","Hafnium","High-purity quartz","Silicon metal","Fluorspar"],"ucode":{"Iron ore":1,"Metallurgical coal":2,"Thermal coal":3,"Copper":4,"Aluminium":5,"Nickel":6,"Zinc":7,"Lead":8,"Tin":9,"Lithium":10,"Cobalt":11,"Natural graphite":12,"Uranium":13,"Zirconium":14,"NdPr (neodymium-praseodymium)":15,"Dy/Tb (dysprosium-terbium)":16,"Tungsten":17,"Antimony":18,"Titanium feedstock":19,"Molybdenum":20,"Tantalum":21,"Gold":22,"Silver":23,"Platinum and palladium":24,"Phosphate rock":25,"Potash":26,"Gallium":27,"Germanium":28,"Indium":29,"Tellurium":30,"Hafnium":31,"High-purity quartz":32,"Silicon metal":33,"Fluorspar":34,"NdPr":15,"Dy/Tb":16},"families":["Bulks and base metals","Battery and storage","Nuclear","Magnet rare earths","Alloy and defence","Precious and PGM","Agricultural and industrial"]},"items":[{"code":"S1","kind":"single","section":"Screening","stem":"Which of the following best describes your organisation?","instr":"Select one.","origin":"TMG","options":[{"code":1,"label":"Dedicated natural resources or mining fund","fixed":false,"dq":false},{"code":2,"label":"Diversified institution with a resources sleeve and a named resources analyst or PM","fixed":false,"dq":false},{"code":3,"label":"Private capital or credit fund with an active mining mandate","fixed":false,"dq":false},{"code":4,"label":"Family office or endowment with direct resources allocations","fixed":false,"dq":false},{"code":5,"label":"Generalist investor with no resources specialism","fixed":false,"dq":true},{"code":6,"label":"Sell-side analyst, broker or corporate finance adviser","fixed":false,"dq":true},{"code":7,"label":"Mining company employee, consultant or service provider","fixed":false,"dq":true},{"code":8,"label":"Retail investor","fixed":false,"dq":true},{"code":98,"label":"None of these","fixed":true,"kind":"none","dq":true}],"randOpts":true},{"code":"S2","kind":"single","section":"Screening","stem":"Which of the following best describes your role?","instr":"Select one.","origin":"TMG","options":[{"code":1,"label":"Analyst","fixed":true,"dq":false},{"code":2,"label":"Senior analyst or associate","fixed":true,"dq":false},{"code":3,"label":"Portfolio manager","fixed":true,"dq":false},{"code":4,"label":"Head of resources or chief investment officer","fixed":true,"dq":false},{"code":5,"label":"Partner, principal or owner","fixed":true,"dq":false},{"code":6,"label":"Below analyst level","fixed":true,"dq":true}]},{"code":"S3","kind":"single","section":"Screening","stem":"How many years have you covered the mining and metals sector?","instr":"Select one.","origin":"TMG","options":[{"code":1,"label":"Less than 3 years","fixed":true,"dq":true},{"code":2,"label":"3 to 5 years","fixed":true,"dq":false},{"code":3,"label":"6 to 10 years","fixed":true,"dq":false},{"code":4,"label":"More than 10 years","fixed":true,"dq":false}]},{"code":"S4","kind":"single","section":"Screening","stem":"Do you have professional responsibility for mining and metals investment decisions?","instr":"Select one.","origin":"TMG","options":[{"code":1,"label":"Yes","fixed":true,"dq":false},{"code":2,"label":"No","fixed":true,"dq":true}]},{"code":"S5","kind":"single","section":"Screening","stem":"Which of the following best describes the assets under management of your organisation?","instr":"Select one.","origin":"TMG","options":[{"code":1,"label":"Under US$100 million","fixed":true,"dq":false},{"code":2,"label":"US$100 million to US$500 million","fixed":true,"dq":false},{"code":3,"label":"US$500 million to US$1 billion","fixed":true,"dq":false},{"code":4,"label":"US$1 billion to US$5 billion","fixed":true,"dq":false},{"code":5,"label":"US$5 billion to US$25 billion","fixed":true,"dq":false},{"code":6,"label":"Above US$25 billion","fixed":true,"dq":false},{"code":99,"label":"Prefer not to say","fixed":true}]},{"code":"S6","kind":"single","section":"Screening","stem":"Which of the following best describes your mandate type?","instr":"Select one.","origin":"TMG","options":[{"code":1,"label":"Public equities, long only","fixed":true,"dq":false},{"code":2,"label":"Public equities, long and short","fixed":true,"dq":false},{"code":3,"label":"Private equity or venture capital","fixed":true,"dq":false},{"code":4,"label":"Private credit or debt","fixed":true,"dq":false},{"code":5,"label":"Royalties, streaming or other direct resource interests","fixed":true,"dq":false},{"code":6,"label":"Multi-asset or other","fixed":true,"dq":false}]},{"code":"S7","kind":"coverage","section":"Screening","stem":"Which of the following commodities do you actively cover?","instr":"Select up to ten.","origin":"TMG","options":[{"code":1,"label":"Iron ore","family":"Bulks and base metals","fixed":false},{"code":2,"label":"Metallurgical coal","family":"Bulks and base metals","fixed":false},{"code":3,"label":"Thermal coal","family":"Bulks and base metals","fixed":false},{"code":4,"label":"Copper","family":"Bulks and base metals","fixed":false},{"code":5,"label":"Aluminium","family":"Bulks and base metals","fixed":false},{"code":6,"label":"Nickel","family":"Bulks and base metals","fixed":false},{"code":7,"label":"Zinc","family":"Bulks and base metals","fixed":false},{"code":8,"label":"Lead","family":"Bulks and base metals","fixed":false},{"code":9,"label":"Tin","family":"Bulks and base metals","fixed":false},{"code":10,"label":"Lithium","family":"Battery and storage","fixed":false},{"code":11,"label":"Cobalt","family":"Battery and storage","fixed":false},{"code":12,"label":"Natural graphite","family":"Battery and storage","fixed":false},{"code":13,"label":"Uranium","family":"Nuclear","fixed":false},{"code":14,"label":"Zirconium","family":"Nuclear","fixed":false},{"code":15,"label":"NdPr (neodymium-praseodymium)","family":"Magnet rare earths","fixed":false},{"code":16,"label":"Dy/Tb (dysprosium-terbium)","family":"Magnet rare earths","fixed":false},{"code":17,"label":"Tungsten","family":"Alloy and defence","fixed":false},{"code":18,"label":"Antimony","family":"Alloy and defence","fixed":false},{"code":19,"label":"Titanium feedstock","family":"Alloy and defence","fixed":false},{"code":20,"label":"Molybdenum","family":"Alloy and defence","fixed":false},{"code":21,"label":"Tantalum","family":"Alloy and defence","fixed":false},{"code":22,"label":"Gold","family":"Precious and PGM","fixed":false},{"code":23,"label":"Silver","family":"Precious and PGM","fixed":false},{"code":24,"label":"Platinum and palladium","family":"Precious and PGM","fixed":false},{"code":25,"label":"Phosphate rock","family":"Agricultural and industrial","fixed":false},{"code":26,"label":"Potash","family":"Agricultural and industrial","fixed":false}],"families":["Bulks and base metals","Battery and storage","Nuclear","Magnet rare earths","Alloy and defence","Precious and PGM","Agricultural and industrial"],"max":10,"softMinOutside":3},{"code":"Q1","section":"Section A - Price expectations","title":null,"stem":"For each of the following, what is your expectation for the real price in September 2027, against today?","instr":"Select one option per commodity.","origin":"Client","kind":"grid","gridType":"FIXED","rows":[{"code":4,"label":"Copper"},{"code":22,"label":"Gold"},{"code":10,"label":"Lithium"},{"code":13,"label":"Uranium"},{"code":6,"label":"Nickel"},{"code":1,"label":"Iron ore"},{"code":15,"label":"NdPr"},{"code":3,"label":"Thermal coal"}],"randRows":true,"options":[{"code":1,"label":"Sharply lower - down more than 25%","fixed":true},{"code":2,"label":"Lower - down 10% to 25%","fixed":true},{"code":3,"label":"Broadly flat - within 10% either way","fixed":true},{"code":4,"label":"Higher - up 10% to 25%","fixed":true},{"code":5,"label":"Sharply higher - up more than 25%","fixed":true},{"code":99,"label":"No view","fixed":true,"kind":"noview"}],"noviewAdded":false,"rowKind":"commodity"},{"code":"Q2","section":"Section A - Price expectations","title":null,"stem":"For each commodity you cover, what is your expectation for the real price in 2031, against today?","instr":"Select one option per commodity.","origin":"Client","kind":"grid","gridType":"ROUTED","rowsFrom":"covered","rows":[],"randRows":true,"options":[{"code":1,"label":"Sharply lower - down more than 40%","fixed":true},{"code":2,"label":"Lower - down 15% to 40%","fixed":true},{"code":3,"label":"Broadly flat - within 15% either way","fixed":true},{"code":4,"label":"Higher - up 15% to 40%","fixed":true},{"code":5,"label":"Sharply higher - up more than 40%","fixed":true},{"code":99,"label":"No view","fixed":true,"kind":"noview"}],"noviewAdded":false,"rowKind":"commodity"},{"code":"Q3","section":"Section A - Price expectations","title":null,"stem":"For each commodity you cover, what price would be required to sustain a final investment decision on a new greenfield project?","instr":"Select one option per commodity.","origin":"Client","kind":"grid","gridType":"ROUTED","rowsFrom":"covered","rows":[],"randRows":true,"options":[{"code":1,"label":"Below today’s spot price - around 20% below","fixed":true},{"code":2,"label":"Today’s spot price","fixed":true},{"code":3,"label":"Around 25% above spot","fixed":true},{"code":4,"label":"Around 50% above spot","fixed":true},{"code":5,"label":"Around 100% above spot","fixed":true},{"code":6,"label":"More than 100% above spot","fixed":true},{"code":7,"label":"No price would unlock new supply - the constraint is not price","fixed":true},{"code":99,"label":"No view","fixed":true,"kind":"noview"}],"noviewAdded":false,"rowKind":"commodity"},{"code":"Q4","section":"Section A - Price expectations","title":null,"stem":"Overall, how much conviction do you hold in five-year commodity price forecasting?","instr":"Select one.","origin":"Client","kind":"single","options":[{"code":1,"label":"1 - very low conviction","fixed":true},{"code":2,"label":"2 - low conviction","fixed":true},{"code":3,"label":"3 - moderate conviction","fixed":true},{"code":4,"label":"4 - high conviction","fixed":true},{"code":5,"label":"5 - very high conviction","fixed":true}],"randOpts":false},{"code":"Q5A","section":"Section B - Demand drivers","title":"Demand drivers to 2031","stem":"Which of the following will be material drivers of mineral demand growth between now and 2031?","instr":"Select all that apply.","origin":"Client","kind":"multi","options":[{"code":1,"label":"Data centres and AI infrastructure","fixed":false},{"code":2,"label":"Electricity grid and transmission build-out","fixed":false},{"code":3,"label":"Electric vehicles and battery manufacturing","fixed":false},{"code":4,"label":"Defence and aerospace","fixed":false},{"code":5,"label":"Construction and general GDP growth","fixed":false},{"code":6,"label":"Agriculture and food security","fixed":false},{"code":7,"label":"Consumer electronics","fixed":false}],"randOpts":true},{"code":"Q5B","section":"Section B - Demand drivers","title":"Demand drivers to 2031","stem":"Of those you selected, which single driver will have the greatest influence on mineral demand?","instr":"Select one.","origin":"Client","kind":"single","options":[{"code":1,"label":"Data centres and AI infrastructure","fixed":false},{"code":2,"label":"Electricity grid and transmission build-out","fixed":false},{"code":3,"label":"Electric vehicles and battery manufacturing","fixed":false},{"code":4,"label":"Defence and aerospace","fixed":false},{"code":5,"label":"Construction and general GDP growth","fixed":false},{"code":6,"label":"Agriculture and food security","fixed":false},{"code":7,"label":"Consumer electronics","fixed":false}],"randOpts":true,"pipeFrom":"Q5A"},{"code":"Q6","section":"Section B - Demand drivers","title":null,"stem":"Which single driver do you consider most over-priced into current commodity markets?","instr":"Select one.","origin":"Client","kind":"single","options":[{"code":1,"label":"Data centres and AI infrastructure","fixed":false},{"code":2,"label":"Electricity grid and transmission build-out","fixed":false},{"code":3,"label":"Electric vehicles and battery manufacturing","fixed":false},{"code":4,"label":"Defence and aerospace","fixed":false},{"code":5,"label":"Construction and general GDP growth","fixed":false},{"code":6,"label":"Agriculture and food security","fixed":false},{"code":7,"label":"Consumer electronics","fixed":false},{"code":98,"label":"None - current pricing is broadly fair","fixed":true,"excl":true,"kind":"none"}],"randOpts":true},{"code":"Q7","section":"Section B - Demand drivers","title":null,"stem":"For each commodity you cover, what is your expectation for real demand growth over the next five years?","instr":"Select one option per commodity.","origin":"Client","kind":"grid","gridType":"ROUTED","rowsFrom":"covered","rows":[],"randRows":true,"options":[{"code":1,"label":"Contracting - below 0% a year","fixed":true},{"code":2,"label":"0% to 2% a year","fixed":true},{"code":3,"label":"2% to 5% a year","fixed":true},{"code":4,"label":"5% to 10% a year","fixed":true},{"code":5,"label":"Above 10% a year","fixed":true},{"code":99,"label":"No view","fixed":true,"kind":"noview"}],"noviewAdded":false,"rowKind":"commodity"},{"code":"Q8","section":"Section B - Demand drivers","title":null,"stem":"How likely is each of the following to occur before the end of 2031?","instr":"Select one probability band for each statement.","origin":"Client","kind":"grid","gridType":"GRID","rows":[{"code":1,"label":"Data centre and AI capital expenditure is sustained at or above current levels through 2029"},{"code":2,"label":"A wave of small modular reactor projects reaches final investment decision"},{"code":3,"label":"LFP chemistry exceeds 70% of global battery cell production"},{"code":4,"label":"Solid-state batteries reach commercial-scale production"},{"code":5,"label":"Allied defence spending exceeds 3.5% of GDP across major NATO members"},{"code":6,"label":"China imposes a further export control on a named mineral or mineral product"}],"randRows":true,"options":[{"code":1,"label":"Below 10%","fixed":true},{"code":2,"label":"10% to 30%","fixed":true},{"code":3,"label":"30% to 50%","fixed":true},{"code":4,"label":"50% to 70%","fixed":true},{"code":5,"label":"70% to 90%","fixed":true},{"code":6,"label":"Above 90%","fixed":true},{"code":99,"label":"No view","fixed":true,"kind":"noview","added":true}],"noviewAdded":true,"rowKind":"statement"},{"code":"Q9","section":"Section C - Supply response and market structure","title":null,"stem":"In each jurisdiction, how long does a new mine realistically take from final investment decision to first production?","instr":"Select one option per jurisdiction.","origin":"Client","kind":"grid","gridType":"GRID","rows":[{"code":1,"label":"Australia and Canada"},{"code":2,"label":"United States"},{"code":3,"label":"European Union"},{"code":4,"label":"Latin America"},{"code":5,"label":"Africa"},{"code":6,"label":"South East Asia"},{"code":7,"label":"China"}],"randRows":true,"options":[{"code":1,"label":"Under 5 years","fixed":true},{"code":2,"label":"5 to 8 years","fixed":true},{"code":3,"label":"8 to 12 years","fixed":true},{"code":4,"label":"12 to 15 years","fixed":true},{"code":5,"label":"More than 15 years","fixed":true},{"code":99,"label":"No view","fixed":true,"kind":"noview","added":true}],"noviewAdded":true,"rowKind":"jurisdiction"},{"code":"Q10","section":"Section C - Supply response and market structure","title":null,"stem":"For each commodity you cover, what share of the additional supply required by 2031 is already financed or under construction?","instr":"Select one option per commodity.","origin":"Client","kind":"grid","gridType":"ROUTED","rowsFrom":"covered","rows":[],"randRows":true,"options":[{"code":1,"label":"No additional supply is required - existing capacity is sufficient","fixed":true},{"code":2,"label":"None of the required supply is committed","fixed":true},{"code":3,"label":"Below 25% of what is required","fixed":true},{"code":4,"label":"25% to 50%","fixed":true},{"code":5,"label":"50% to 75%","fixed":true},{"code":6,"label":"Above 75%","fixed":true},{"code":99,"label":"No view","fixed":true,"kind":"noview"}],"noviewAdded":false,"rowKind":"commodity"},{"code":"Q11","section":"Section C - Supply response and market structure","title":null,"stem":"For each commodity you cover, how responsive is supply to a sustained rise in its own price?","instr":"Select one option per commodity.","origin":"Client","kind":"grid","gridType":"ROUTED","rowsFrom":"covered","rows":[],"randRows":true,"options":[{"code":1,"label":"Highly responsive - output expands readily","fixed":true},{"code":2,"label":"Moderately responsive","fixed":true},{"code":3,"label":"Weakly responsive","fixed":true},{"code":4,"label":"Not responsive - output is set by demand for the metal it is produced alongside","fixed":true},{"code":5,"label":"Not responsive - constrained by processing, permitting or another non-price factor","fixed":true},{"code":99,"label":"No view","fixed":true,"kind":"noview"}],"noviewAdded":false,"rowKind":"commodity"},{"code":"Q12","section":"Section C - Supply response and market structure","title":null,"stem":"For each commodity family, what is the binding constraint on new supply over the next five years?","instr":"Select one option per family.","origin":"Client","kind":"grid","gridType":"GRID","rows":[{"code":1,"label":"Bulks and base metals"},{"code":2,"label":"Battery and storage"},{"code":3,"label":"Nuclear"},{"code":4,"label":"Magnet rare earths"},{"code":5,"label":"Alloy and defence"},{"code":6,"label":"Precious and PGM"},{"code":7,"label":"Agricultural and industrial"},{"code":8,"label":"Semiconductor, optical and minor metals"}],"randRows":true,"options":[{"code":1,"label":"Geology - insufficient economic deposits","fixed":true},{"code":2,"label":"Permitting - regulatory and approval timelines","fixed":true},{"code":3,"label":"Capital - inability to raise or justify funding","fixed":true},{"code":4,"label":"Processing capacity - midstream refining and separation","fixed":true},{"code":5,"label":"Power - availability and cost of electricity","fixed":true},{"code":6,"label":"Labour - shortage of skilled people","fixed":true},{"code":99,"label":"No view","fixed":true,"kind":"noview","added":true}],"noviewAdded":true,"rowKind":"family"},{"code":"Q13","section":"Section C - Supply response and market structure","title":null,"stem":"How much confidence do you place in published reserve and production data from each of the following?","instr":"Select one option per source.","origin":"Client","kind":"grid","gridType":"GRID","rows":[{"code":1,"label":"China"},{"code":2,"label":"Democratic Republic of Congo"},{"code":3,"label":"Russia"},{"code":4,"label":"Myanmar"},{"code":5,"label":"Indonesia"},{"code":6,"label":"Chile and Peru"},{"code":7,"label":"Australia and Canada"}],"randRows":true,"options":[{"code":1,"label":"1 - no confidence","fixed":true},{"code":2,"label":"2 - low confidence","fixed":true},{"code":3,"label":"3 - moderate confidence","fixed":true},{"code":4,"label":"4 - good confidence","fixed":true},{"code":5,"label":"5 - high confidence","fixed":true},{"code":99,"label":"No view","fixed":true,"kind":"noview","added":true}],"noviewAdded":true,"rowKind":"source"},{"code":"Q14","section":"Section C - Supply response and market structure","title":null,"stem":"For each of the following, what share of total supply will come from secondary and recycled material by 2031?","instr":"Select one option per commodity.","origin":"Client","kind":"grid","gridType":"FIXED","rows":[{"code":4,"label":"Copper"},{"code":5,"label":"Aluminium"},{"code":6,"label":"Nickel"},{"code":11,"label":"Cobalt"},{"code":10,"label":"Lithium"},{"code":15,"label":"NdPr"}],"randRows":true,"options":[{"code":1,"label":"Below 5% of total supply","fixed":true},{"code":2,"label":"5% to 15%","fixed":true},{"code":3,"label":"15% to 30%","fixed":true},{"code":4,"label":"30% to 50%","fixed":true},{"code":5,"label":"Above 50% of total supply","fixed":true},{"code":99,"label":"No view","fixed":true,"kind":"noview"}],"noviewAdded":false,"rowKind":"commodity"},{"code":"Q15","section":"Section C - Supply response and market structure","title":null,"stem":"For each commodity you cover, at what price multiple does material thrifting or substitution begin?","instr":"Select one option per commodity.","origin":"Client","kind":"grid","gridType":"ROUTED","rowsFrom":"covered","rows":[],"randRows":true,"options":[{"code":1,"label":"Already occurring at today’s prices","fixed":true},{"code":2,"label":"Below 1.5 times today’s price","fixed":true},{"code":3,"label":"1.5 times today’s price","fixed":true},{"code":4,"label":"2 times today’s price","fixed":true},{"code":5,"label":"3 times today’s price","fixed":true},{"code":6,"label":"5 times today’s price","fixed":true},{"code":7,"label":"No viable substitute at any price","fixed":true},{"code":99,"label":"No view","fixed":true,"kind":"noview"}],"noviewAdded":false,"rowKind":"commodity"},{"code":"Q16","section":"Section C - Supply response and market structure","title":null,"stem":"Which price signal would you underwrite an investment against, in a commodity without exchange-traded pricing?","instr":"Select one.","origin":"Client","kind":"single","options":[{"code":1,"label":"An exchange-traded price","fixed":false},{"code":2,"label":"A price reporting agency assessment","fixed":false},{"code":3,"label":"A bilateral contract price","fixed":false},{"code":98,"label":"None of these - I would not underwrite against any available signal","fixed":true,"excl":true,"kind":"none"}],"randOpts":true},{"code":"Q17A","section":"Section C - Supply response and market structure","title":"Minor and opaque commodities","stem":"For which of the following do you hold an active investment view or exposure?","instr":"Select all that apply.","origin":"Client","kind":"multi","options":[{"code":1,"label":"Gallium","fixed":false},{"code":2,"label":"Germanium","fixed":false},{"code":3,"label":"Indium","fixed":false},{"code":4,"label":"Tellurium","fixed":false},{"code":5,"label":"Hafnium","fixed":false},{"code":6,"label":"High-purity quartz","fixed":false},{"code":7,"label":"Silicon metal","fixed":false},{"code":8,"label":"Fluorspar","fixed":false},{"code":98,"label":"None of these","fixed":true,"excl":true,"kind":"none"}],"randOpts":true},{"code":"Q17B","section":"Section C - Supply response and market structure","title":"Minor and opaque commodities","stem":"For which of the following is there no price signal you would underwrite an investment against?","instr":"Select all that apply.","origin":"Client","kind":"multi","options":[{"code":1,"label":"Gallium","fixed":false},{"code":2,"label":"Germanium","fixed":false},{"code":3,"label":"Indium","fixed":false},{"code":4,"label":"Tellurium","fixed":false},{"code":5,"label":"Hafnium","fixed":false},{"code":6,"label":"High-purity quartz","fixed":false},{"code":7,"label":"Silicon metal","fixed":false},{"code":8,"label":"Fluorspar","fixed":false},{"code":98,"label":"None of these","fixed":true,"excl":true,"kind":"none"}],"randOpts":true},{"code":"Q18A","section":"Section D - Political friction and capital availability","title":"Barriers to investment","stem":"For commodities you do not currently invest in, which of the following are barriers?","instr":"Select all that apply.","origin":"Client","kind":"multi","options":[{"code":1,"label":"Market too small for our fund size","fixed":false},{"code":2,"label":"No transparent price discovery","fixed":false},{"code":3,"label":"No investable vehicles or listed exposure","fixed":false},{"code":4,"label":"Insufficient liquidity to build or exit a position","fixed":false},{"code":5,"label":"Insufficient understanding of the end-market","fixed":false},{"code":6,"label":"No assets of adequate quality or scale","fixed":false},{"code":7,"label":"Jurisdiction risk in the main producing countries","fixed":false},{"code":8,"label":"Mandate or policy restrictions","fixed":false}],"randOpts":true},{"code":"Q18B","section":"Section D - Political friction and capital availability","title":"Barriers to investment","stem":"Which single barrier is the greatest?","instr":"Select one.","origin":"Client","kind":"single","options":[{"code":1,"label":"Market too small for our fund size","fixed":false},{"code":2,"label":"No transparent price discovery","fixed":false},{"code":3,"label":"No investable vehicles or listed exposure","fixed":false},{"code":4,"label":"Insufficient liquidity to build or exit a position","fixed":false},{"code":5,"label":"Insufficient understanding of the end-market","fixed":false},{"code":6,"label":"No assets of adequate quality or scale","fixed":false},{"code":7,"label":"Jurisdiction risk in the main producing countries","fixed":false},{"code":8,"label":"Mandate or policy restrictions","fixed":false}],"randOpts":true,"pipeFrom":"Q18A"},{"code":"Q19","section":"Section D - Political friction and capital availability","title":null,"stem":"What is your mandate position on each of the following, and how has it changed over the past 24 months?","instr":"Select one option per item.","origin":"Client","kind":"grid","gridType":"GRID","rows":[{"code":1,"label":"Thermal coal"},{"code":2,"label":"Metallurgical coal"},{"code":3,"label":"Uranium"},{"code":4,"label":"Phosphate rock"},{"code":5,"label":"Cobalt sourced from the DRC"},{"code":6,"label":"Heavy rare earths sourced from Myanmar"},{"code":7,"label":"Deep-sea polymetallic nodules"},{"code":8,"label":"Supply with Russian ownership or offtake links"}],"randRows":true,"options":[{"code":1,"label":"Permitted now, and permitted 24 months ago","fixed":true},{"code":2,"label":"Permitted now, but excluded or case by case 24 months ago","fixed":true},{"code":3,"label":"Case by case now, and case by case 24 months ago","fixed":true},{"code":4,"label":"Case by case now, but excluded 24 months ago","fixed":true},{"code":5,"label":"Case by case now, but permitted 24 months ago","fixed":true},{"code":6,"label":"Excluded now, but permitted or case by case 24 months ago","fixed":true},{"code":7,"label":"Excluded now, and excluded 24 months ago","fixed":true},{"code":99,"label":"No view","fixed":true,"kind":"noview","added":true}],"noviewAdded":true,"rowKind":"policy item"},{"code":"Q20","section":"Section D - Political friction and capital availability","title":null,"stem":"In each jurisdiction, how wide is the gap between stated government support for mineral supply and capital actually deployed?","instr":"Select one option per jurisdiction.","origin":"Client","kind":"grid","gridType":"GRID","rows":[{"code":1,"label":"Australia and Canada"},{"code":2,"label":"United States"},{"code":3,"label":"European Union"},{"code":4,"label":"Latin America"},{"code":5,"label":"Africa"},{"code":6,"label":"South East Asia"},{"code":7,"label":"China"}],"randRows":true,"options":[{"code":1,"label":"Wide - policy support has not translated into capital","fixed":true},{"code":2,"label":"Moderate - some translation into capital","fixed":true},{"code":3,"label":"Narrow - capital broadly matches stated policy","fixed":true},{"code":99,"label":"No view","fixed":true,"kind":"noview","added":true}],"noviewAdded":true,"rowKind":"jurisdiction"},{"code":"Q21A","section":"Section D - Political friction and capital availability","title":"Supply security risk","stem":"Which presents the greater risk to Western supply security over the next five years?","instr":"Select one.","origin":"Client","kind":"single","options":[{"code":1,"label":"Concentration of mine production","fixed":false},{"code":2,"label":"Concentration of refining and processing capacity","fixed":false},{"code":3,"label":"The two present equal risk","fixed":true}],"randOpts":true},{"code":"Q21B","section":"Section D - Political friction and capital availability","title":"Supply security risk","stem":"For which single commodity is the midstream processing gap most severe?","instr":"Select one.","origin":"Client","kind":"single","options":[{"code":1,"label":"Iron ore","fixed":false},{"code":2,"label":"Metallurgical coal","fixed":false},{"code":3,"label":"Thermal coal","fixed":false},{"code":4,"label":"Copper","fixed":false},{"code":5,"label":"Aluminium","fixed":false},{"code":6,"label":"Nickel","fixed":false},{"code":7,"label":"Zinc","fixed":false},{"code":8,"label":"Lead","fixed":false},{"code":9,"label":"Tin","fixed":false},{"code":10,"label":"Lithium","fixed":false},{"code":11,"label":"Cobalt","fixed":false},{"code":12,"label":"Natural graphite","fixed":false},{"code":13,"label":"Uranium","fixed":false},{"code":14,"label":"Zirconium","fixed":false},{"code":15,"label":"NdPr (neodymium-praseodymium)","fixed":false},{"code":16,"label":"Dy/Tb (dysprosium-terbium)","fixed":false},{"code":17,"label":"Tungsten","fixed":false},{"code":18,"label":"Antimony","fixed":false},{"code":19,"label":"Titanium feedstock","fixed":false},{"code":20,"label":"Molybdenum","fixed":false},{"code":21,"label":"Tantalum","fixed":false},{"code":22,"label":"Gold","fixed":false},{"code":23,"label":"Silver","fixed":false},{"code":24,"label":"Platinum and palladium","fixed":false},{"code":25,"label":"Phosphate rock","fixed":false},{"code":26,"label":"Potash","fixed":false},{"code":27,"label":"Gallium","fixed":false},{"code":28,"label":"Germanium","fixed":false},{"code":29,"label":"Indium","fixed":false},{"code":30,"label":"Tellurium","fixed":false},{"code":31,"label":"Hafnium","fixed":false},{"code":32,"label":"High-purity quartz","fixed":false},{"code":33,"label":"Silicon metal","fixed":false},{"code":34,"label":"Fluorspar","fixed":false}],"randOpts":true},{"code":"Q22","section":"Section E - Criticality","title":null,"stem":"For each commodity you cover, how much downstream economic value would be disrupted by a 30% loss of global supply sustained over twelve months?","instr":"Select one option per commodity.","origin":"Client","kind":"grid","gridType":"ROUTED","rowsFrom":"covered","rows":[],"randRows":true,"options":[{"code":1,"label":"Under US$10 billion","fixed":true},{"code":2,"label":"US$10 billion to US$50 billion","fixed":true},{"code":3,"label":"US$50 billion to US$250 billion","fixed":true},{"code":4,"label":"US$250 billion to US$1 trillion","fixed":true},{"code":5,"label":"Above US$1 trillion","fixed":true},{"code":99,"label":"No view","fixed":true,"kind":"noview"}],"noviewAdded":false,"rowKind":"commodity"},{"code":"Q23","section":"Section E - Criticality","title":null,"stem":"If a critical minerals list were capped at eight names, which eight would you include?","instr":"Select exactly eight.","origin":"Client","kind":"exact8","exact":8,"options":[{"code":1,"label":"Iron ore","fixed":false},{"code":2,"label":"Metallurgical coal","fixed":false},{"code":3,"label":"Thermal coal","fixed":false},{"code":4,"label":"Copper","fixed":false},{"code":5,"label":"Aluminium","fixed":false},{"code":6,"label":"Nickel","fixed":false},{"code":7,"label":"Zinc","fixed":false},{"code":8,"label":"Lead","fixed":false},{"code":9,"label":"Tin","fixed":false},{"code":10,"label":"Lithium","fixed":false},{"code":11,"label":"Cobalt","fixed":false},{"code":12,"label":"Natural graphite","fixed":false},{"code":13,"label":"Uranium","fixed":false},{"code":14,"label":"Zirconium","fixed":false},{"code":15,"label":"NdPr (neodymium-praseodymium)","fixed":false},{"code":16,"label":"Dy/Tb (dysprosium-terbium)","fixed":false},{"code":17,"label":"Tungsten","fixed":false},{"code":18,"label":"Antimony","fixed":false},{"code":19,"label":"Titanium feedstock","fixed":false},{"code":20,"label":"Molybdenum","fixed":false},{"code":21,"label":"Tantalum","fixed":false},{"code":22,"label":"Gold","fixed":false},{"code":23,"label":"Silver","fixed":false},{"code":24,"label":"Platinum and palladium","fixed":false},{"code":25,"label":"Phosphate rock","fixed":false},{"code":26,"label":"Potash","fixed":false},{"code":27,"label":"Gallium","fixed":false},{"code":28,"label":"Germanium","fixed":false},{"code":29,"label":"Indium","fixed":false},{"code":30,"label":"Tellurium","fixed":false},{"code":31,"label":"Hafnium","fixed":false},{"code":32,"label":"High-purity quartz","fixed":false},{"code":33,"label":"Silicon metal","fixed":false},{"code":34,"label":"Fluorspar","fixed":false}],"randOpts":true},{"code":"Q24","section":"Section E - Criticality","title":null,"stem":"Which mineral is most wrongly included on current critical minerals lists?","instr":"Select one.","origin":"Client","kind":"single","options":[{"code":10,"label":"Lithium","fixed":false},{"code":11,"label":"Cobalt","fixed":false},{"code":6,"label":"Nickel","fixed":false},{"code":12,"label":"Natural graphite","fixed":false},{"code":15,"label":"NdPr","fixed":false},{"code":16,"label":"Dy/Tb","fixed":false},{"code":27,"label":"Gallium","fixed":false},{"code":28,"label":"Germanium","fixed":false},{"code":18,"label":"Antimony","fixed":false},{"code":19,"label":"Titanium feedstock","fixed":false},{"code":17,"label":"Tungsten","fixed":false},{"code":34,"label":"Fluorspar","fixed":false},{"code":98,"label":"None - all are correctly listed","fixed":true,"excl":true,"kind":"none"}],"randOpts":true}]};
+const NV=99;
+const ITEMS=SPEC.items;
+const UNIVERSE=SPEC.meta.tier1.concat(SPEC.meta.tier2);
+const NONCORE_FAMS=['Battery and storage','Nuclear','Magnet rare earths','Alloy and defence','Agricultural and industrial'];
+const params=new URLSearchParams(location.search);
+const REF=(params.get('ref')||'').trim();
+const IS_TEST=/^TEST/i.test(REF);
+const state={ref:REF,answers:{},idx:-1,startIso:null,order:{},cleared:false,saving:false,done:false};
+const $=s=>document.querySelector(s);
+const app=$('#app');
+function esc(t){return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function device(){const w=Math.min(screen.width||innerWidth,innerWidth);const ua=navigator.userAgent||'';if(/iPad|Tablet/i.test(ua)||(w>=600&&w<1024&&/Mobi|Android/i.test(ua)))return'Tablet';if(/Mobi|Android|iPhone/i.test(ua)||w<600)return'Mobile';return'Desktop'}
+function lsGet(k){try{return localStorage.getItem(k)}catch(e){return null}}
+function lsSet(k,v){try{localStorage.setItem(k,v)}catch(e){}}
+function post(payload){
+  if(!SCRIPT_URL||SCRIPT_URL.indexOf('PASTE_')===0){console.log('POST (no endpoint configured)',payload);return Promise.resolve({ok:true,offline:true})}
+  return fetch(SCRIPT_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload)}).then(r=>r.json());
+}
+function get(q){
+  if(!SCRIPT_URL||SCRIPT_URL.indexOf('PASTE_')===0)return Promise.resolve({});
+  return fetch(SCRIPT_URL+'?'+q).then(r=>r.json());
+}
+function payload(status,last,dq){return{ref:state.ref,status:status,lastScreen:last,dqReason:dq||'',startIso:state.startIso,device:device(),answers:state.answers}}
+
+/* ---------- item helpers ---------- */
+function covered(){return (state.answers.S7||[]).slice()}
+function rowsFor(it){
+  if(it.rowsFrom==='covered')return covered().map(c=>({code:c,label:UNIVERSE[c-1]}));
+  return it.rows;
+}
+function optsFor(it){
+  if(it.pipeFrom){const sel=state.answers[it.pipeFrom]||[];return it.options.filter(o=>sel.indexOf(o.code)>=0)}
+  return it.options;
+}
+function itemApplicable(it){
+  if(it.pipeFrom){const n=optsFor(it).length;if(n===0)return false;if(n===1){state.answers[it.code]=optsFor(it)[0].code;return false}}
+  if(it.rowsFrom==='covered'&&covered().length===0)return false;
+  return true;
+}
+function nextIndex(from){
+  for(let i=from+1;i<ITEMS.length;i++){if(itemApplicable(ITEMS[i]))return i}
+  return -1;
+}
+function ordered(it,list,key,doRand){
+  const k=it.code+'|'+key;
+  if(!state.order[k]){
+    const fixedTail=list.filter(x=>x.fixed&&doRand);
+    const free=list.filter(x=>!(x.fixed&&doRand));
+    state.order[k]=(doRand?shuffle(free):free).concat(fixedTail).map(x=>x.code);
+  }
+  const m={};list.forEach(x=>m[x.code]=x);
+  return state.order[k].filter(c=>m[c]).map(c=>m[c]);
+}
+function progress(){
+  const total=ITEMS.length;const pct=Math.max(0,Math.min(100,Math.round(((state.idx+1)/total)*100)));
+  $('#pbar').style.width=pct+'%';$('#pg').textContent=state.idx>=0?pct+'%':'';
+}
+
+/* ---------- screens ---------- */
+function syncAria(){document.querySelectorAll('.opt,.pill').forEach(x=>x.setAttribute('aria-pressed',x.classList.contains('sel')?'true':'false'))}
+document.addEventListener('click',()=>setTimeout(syncAria,0));
+function screen(html){app.innerHTML=html;window.scrollTo(0,0);syncAria()}
+function showInvalid(){screen('<div class="card center"><h1>This link is not valid</h1><p>Please use the personal link you were sent.</p></div>')}
+function showUsed(){screen('<div class="card center"><h1>This link has already been used</h1><p>Thank you for your interest in this survey.</p></div>')}
+function showDQ(){screen('<div class="card center"><h1>Thank you for your time</h1><p>At this time, you don’t qualify for this particular survey. We appreciate your interest.</p></div>')}
+function showThanks(){screen('<div class="card center"><h1>Thank you</h1><p>Your responses have been recorded. You can now close this window.</p></div>')}
+function showIntro(){
+  screen('<div class="card"><div class="eyebrow">Survey introduction</div><h1>Mineral commodity markets survey</h1>'+
+  '<p>Thank you for taking part. This survey asks for your professional judgement on mineral commodity markets over the next five years.</p>'+
+  '<p>It takes about 16 to 19 minutes. Your responses are confidential and reported in aggregate only.</p>'+
+  '<div class="bar"><span></span><button class="btn" id="go">Start</button></div></div>');
+  $('#go').onclick=()=>{state.startIso=new Date().toISOString();get('action=open&ref='+encodeURIComponent(state.ref)).catch(()=>{});goto(0)};
+}
+function goto(i){state.idx=i;progress();renderItem(ITEMS[i]);app.setAttribute('data-code',ITEMS[i].code)}
+function head(it){
+  return '<div class="eyebrow">'+esc(it.section)+'</div>'+(it.title?'<div class="qtitle">'+esc(it.title)+'</div>':'')+'<h1>'+esc(it.stem)+'</h1>'+'<p class="instr">'+esc(it.instr||'')+'</p>';
+}
+function footer(label){return '<div class="err" id="err"></div><div class="bar"><span class="cnt" id="cnt"></span><button class="btn" id="nx">'+(label||'Next')+'</button></div>'}
+function renderItem(it){
+  if(it.kind==='single')return renderSingle(it);
+  if(it.kind==='multi'||it.kind==='exact8')return renderMulti(it);
+  if(it.kind==='grid')return renderGrid(it);
+  if(it.kind==='coverage')return renderCoverage(it);
+}
+function isLast(){return nextIndex(state.idx)===-1}
+function setErr(m){const e=$('#err');if(e)e.textContent=m||''}
+
+function renderSingle(it){
+  const list=ordered(it,optsFor(it),'o',it.randOpts);
+  let h='<div class="card">'+head(it)+'<div class="opts">';
+  list.forEach(o=>{h+='<button type="button" class="opt'+(state.answers[it.code]===o.code?' sel':'')+'" data-c="'+o.code+'"><span class="mk"></span><span>'+esc(o.label)+'</span></button>'});
+  h+='</div>'+footer(isLast()?'Submit':'Next')+'</div>';
+  screen(h);
+  document.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
+    state.answers[it.code]=+b.dataset.c;
+    document.querySelectorAll('.opt').forEach(x=>x.classList.toggle('sel',x===b));setErr('');
+  });
+  $('#nx').onclick=()=>{
+    const v=state.answers[it.code];
+    if(v===undefined){setErr('Please select one option.');return}
+    const o=it.options.find(x=>x.code===v);
+    if(o&&o.dq){return terminate(it.code,'Disqualified at '+it.code)}
+    advance(it);
+  };
+}
+function renderMulti(it){
+  const list=ordered(it,optsFor(it),'o',it.randOpts);
+  const cur=state.answers[it.code]=state.answers[it.code]||[];
+  const exact=it.kind==='exact8'?it.exact:0;
+  let h='<div class="card">'+head(it)+'<div class="opts">';
+  list.forEach(o=>{h+='<button type="button" class="opt multi'+(cur.indexOf(o.code)>=0?' sel':'')+'" data-c="'+o.code+'"><span class="mk"></span><span>'+esc(o.label)+'</span></button>'});
+  h+='</div>'+footer(isLast()?'Submit':'Next')+'</div>';
+  screen(h);
+  const cnt=()=>{if(exact)$('#cnt').textContent='Selected '+state.answers[it.code].length+' of '+exact};cnt();
+  document.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
+    const c=+b.dataset.c;const o=it.options.find(x=>x.code===c);let a=state.answers[it.code];const i=a.indexOf(c);
+    if(i>=0){a.splice(i,1)}
+    else{
+      if(o.excl){a.length=0}else{const ex=it.options.filter(x=>x.excl).map(x=>x.code);a=state.answers[it.code]=a.filter(x=>ex.indexOf(x)<0)}
+      if(exact&&a.length>=exact){setErr('You can select exactly '+exact+'. Deselect one to change your choice.');return}
+      a.push(c);
+    }
+    document.querySelectorAll('.opt').forEach(x=>x.classList.toggle('sel',state.answers[it.code].indexOf(+x.dataset.c)>=0));
+    setErr('');cnt();
+  });
+  $('#nx').onclick=()=>{
+    const a=state.answers[it.code];
+    if(exact){if(a.length!==exact){setErr('Please select exactly '+exact+'.');return}}
+    else if(a.length===0){setErr('Please select at least one option.');return}
+    advance(it);
+  };
+}
+function renderCoverage(it){
+  const cur=state.answers[it.code]=state.answers[it.code]||[];
+  let h='<div class="card">'+head(it)+'<div id="fams">';
+  it.families.forEach(f=>{
+    const list=ordered(it,it.options.filter(o=>o.family===f),'f:'+f,true);
+    h+='<div class="fam">'+esc(f)+'</div><div class="opts">';
+    list.forEach(o=>{h+='<button type="button" class="opt multi'+(cur.indexOf(o.code)>=0?' sel':'')+'" data-c="'+o.code+'"><span class="mk"></span><span>'+esc(o.label)+'</span></button>'});
+    h+='</div>';
+  });
+  h+='</div>'+footer('Next')+'</div>';
+  screen(h);
+  const famOf={};it.options.forEach(o=>famOf[o.code]=o.family);
+  const outside=()=>state.answers[it.code].filter(c=>NONCORE_FAMS.indexOf(famOf[c])>=0).length;
+  const cnt=()=>{$('#cnt').textContent='Selected '+state.answers[it.code].length+' of '+it.max};cnt();
+  let warned=false;
+  document.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
+    const c=+b.dataset.c;const a=state.answers[it.code];const i=a.indexOf(c);
+    if(i>=0)a.splice(i,1);else{if(a.length>=it.max){setErr('You can select up to '+it.max+'. Deselect one to change your choice.');return}a.push(c)}
+    b.classList.toggle('sel',a.indexOf(c)>=0);setErr('');cnt();
+  });
+  $('#nx').onclick=()=>{
+    const a=state.answers[it.code];
+    if(a.length===0){setErr('Please select at least one commodity.');return}
+    if(outside()<it.softMinOutside&&!warned){warned=true;setErr('You have selected fewer than three commodities outside bulks, base metals and precious metals. If you actively cover others, please add them. Otherwise select Next again to continue.');return}
+    state.cleared=true;advance(it);
+  };
+}
+function renderGrid(it){
+  const rows=ordered(it,rowsFor(it),'r',it.randRows);
+  const opts=it.options;
+  const cur=state.answers[it.code]=state.answers[it.code]||{};
+  let h='<div class="card">'+head(it)+'<div id="rows">';
+  rows.forEach(r=>{
+    h+='<div class="grow" data-r="'+r.code+'"><div class="glabel">'+esc(r.label)+'</div><div class="pills">';
+    opts.forEach(o=>{h+='<button type="button" class="pill'+(o.code===NV?' nv':'')+(cur[r.code]===o.code?' sel':'')+'" data-r="'+r.code+'" data-c="'+o.code+'">'+esc(o.label)+'</button>'});
+    h+='</div></div>';
+  });
+  h+='</div>'+footer(isLast()?'Submit':'Next')+'</div>';
+  screen(h);
+  document.querySelectorAll('.pill').forEach(b=>b.onclick=()=>{
+    const r=b.dataset.r,c=+b.dataset.c;cur[r]=c;
+    document.querySelectorAll('.pill[data-r="'+r+'"]').forEach(x=>x.classList.toggle('sel',+x.dataset.c===c));
+    const g=document.querySelector('.grow[data-r="'+r+'"]');if(g)g.classList.remove('bad');setErr('');
+  });
+  $('#nx').onclick=()=>{
+    let first=null;
+    rows.forEach(r=>{if(cur[r.code]===undefined){const g=document.querySelector('.grow[data-r="'+r.code+'"]');g.classList.add('bad');if(!first)first=g}});
+    if(first){setErr('Please answer every row. Select No view if you do not hold a view.');first.scrollIntoView({block:'center'});return}
+    advance(it);
+  };
+}
+
+/* ---------- flow ---------- */
+function advance(it){
+  const n=nextIndex(state.idx);
+  if(state.cleared&&n!==-1){post(payload('Partial',it.code)).catch(()=>{})}
+  if(n===-1)return submit();
+  goto(n);
+}
+function terminate(code,reason){
+  lsSet('ms_used_'+state.ref,'1');
+  post(payload('Disqualified',code,reason)).catch(()=>{});
+  showDQ();
+}
+function submit(){
+  const btn=$('#nx');if(btn){btn.disabled=true;btn.textContent='Submitting'}
+  post(payload('Complete','Complete')).then(r=>{
+    if(r&&r.ok===false)throw new Error('server');
+    lsSet('ms_used_'+state.ref,'1');state.done=true;showThanks();$('#pbar').style.width='100%';$('#pg').textContent='';
+  }).catch(()=>{
+    if(btn){btn.disabled=false;btn.textContent='Submit'}setErr('Your responses could not be sent. Please check your connection and select Submit again.');
+  });
+}
+
+/* ---------- start ---------- */
+(function init(){
+  if(!REF){showInvalid();return}
+  if(!IS_TEST&&lsGet('ms_used_'+REF)){showUsed();return}
+  get('action=checkLock&ref='+encodeURIComponent(REF)).then(r=>{
+    if(r&&r.locked&&!IS_TEST){showUsed();return}
+    showIntro();
+  }).catch(()=>showIntro());
+})();
+</script>
+</body>
+</html>
